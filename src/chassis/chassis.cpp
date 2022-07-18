@@ -6,7 +6,7 @@
 namespace src::Chassis {
 
 std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
-                                                 .withMotors(LEFT_CHASSIS, RIGHT_CHASSIS)
+                                                 .withMotors(left_chassis_group, right_chassis_group)
                                                  .withDimensions(AbstractMotor::gearset::green, {{4_in, 8_in}, imev5GreenTPR})
                                                  .build();
 

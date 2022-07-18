@@ -4,10 +4,13 @@
 #include "okapi/impl/device/motor/motor.hpp"
 #include "okapi/impl/device/motor/motorGroup.hpp"
 
-const MotorGroup LEFT_CHASSIS = {Motor(15, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees),
-                                 Motor(16, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees),
-                                 Motor(17, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees)};
+static constexpr uint8_t CHASSIS_PORT_L1 = 15;
+static constexpr uint8_t CHASSIS_PORT_L2 = 16;
+static constexpr uint8_t CHASSIS_PORT_L3 = 17;
 
-const MotorGroup RIGHT_CHASSIS = {Motor(9, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees),
-                                  Motor(10, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees),
-                                  Motor(14, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees)};
+static constexpr uint8_t CHASSIS_PORT_R1 = 9;
+static constexpr uint8_t CHASSIS_PORT_R2 = 10;
+static constexpr uint8_t CHASSIS_PORT_R3 = 14;
+
+static constexpr uint8_t SCORER_PORT_1 = 18;
+static constexpr uint8_t SCORER_PORT_2 = 19;
