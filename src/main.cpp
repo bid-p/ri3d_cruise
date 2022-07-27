@@ -1,6 +1,5 @@
-#include "main.h"
-
 #include "chassis/chassis.hpp"
+#include "common.h"
 #include "scorer/scorer.hpp"
 
 /**
