@@ -1,5 +1,8 @@
 #include "chassis/chassis.hpp"
 #include "common.h"
+#include "okapi/impl/device/controller.hpp"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
 #include "scorer/scorer.hpp"
 
 /**
@@ -26,7 +29,9 @@ void on_center_button() {
  */
 void initialize() {
     pros::lcd::initialize();
-    pros::lcd::set_text(1, "Hello PROS User!");
+    pros::lcd::set_text(1, "Hello how are u? I am under the water");
+    pros::lcd::set_text(2, "Please help me here is too much raining");
+    pros::lcd::set_text(3, "UOUOUUOUOU");
 
     pros::lcd::register_btn1_cb(on_center_button);
 }
@@ -81,9 +86,16 @@ using namespace src;
 Controller controller;
 
 void opcontrol() {
+    Chassis::initialize();
+    Scorer::initialize();
+
     while (true) {
-        Chassis::chassis->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY),
-                                             0.5 * controller.getAnalog(ControllerAnalog::rightX));
+        Scorer::update();
+        Chassis::update();
+
+        Scorer::act();
+        Chassis::act();
+
         pros::delay(10);
     }
 }
