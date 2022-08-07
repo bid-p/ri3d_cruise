@@ -17,16 +17,16 @@ std::shared_ptr<ChassisController> chassis =
         .build();
 
 void initialize() {
-  left_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
-  right_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
+    left_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
+    right_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
 }
 
 void update() {}
 
 void act() {
-  Chassis::chassis->getModel()->arcade(
-      controller.getAnalog(ControllerAnalog::leftY),
-      TURN_LIMITING * controller.getAnalog(ControllerAnalog::rightX));
+    Chassis::chassis->getModel()->arcade(
+        controller.getAnalog(ControllerAnalog::leftY),
+        TURN_LIMITING * controller.getAnalog(ControllerAnalog::rightX));
 }
 
 } // namespace src::Chassis

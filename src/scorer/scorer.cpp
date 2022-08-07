@@ -25,22 +25,22 @@ IntakeStates savedIntakeState = currIntakeState;
 
 void initialize() {
     flywheelMotor.setBrakeMode(AbstractMotor::brakeMode::coast);
-    intakeMotor.setBrakeMode(AbstractMotor::brakeMode::brake);  // Set to brake because we might want to hold a frisbee in the intake
+    intakeMotor.setBrakeMode(AbstractMotor::brakeMode::brake); // Set to brake because we might want to hold a frisbee in the intake
 }
 
 void update() {
     // Intake state updating
     if (outtakeBtn.changedToPressed()) {
-        savedIntakeState = currIntakeState;   // Save intake state from before outtake button was pressed
-        currIntakeState = IntakeStates::OUT;  // Outtake while outtake btn is pressed
+        savedIntakeState = currIntakeState;  // Save intake state from before outtake button was pressed
+        currIntakeState = IntakeStates::OUT; // Outtake while outtake btn is pressed
     } else if (outtakeBtn.changedToReleased()) {
-        currIntakeState = savedIntakeState;  // Return to saved state when outtake btn is released
+        currIntakeState = savedIntakeState; // Return to saved state when outtake btn is released
     }
 
     if (intakeToggle.changedToPressed()) {
-        if (currIntakeState != IntakeStates::IN) {  // Toggle intake state between IN and STOPPED
+        if (currIntakeState != IntakeStates::IN) { // Toggle intake state between IN and STOPPED
             currIntakeState = IntakeStates::IN;
-            currFlywheelState = FlywheelStates::RUNNING;  // If intake is running, run the flywheel as well
+            currFlywheelState = FlywheelStates::RUNNING; // If intake is running, run the flywheel as well
         } else {
             currIntakeState = IntakeStates::STOPPED;
         }
@@ -48,7 +48,7 @@ void update() {
 
     // Flywheel state updating
     if (flywheelToggle.changedToPressed()) {
-        if (currFlywheelState != FlywheelStates::RUNNING) {  // Toggle flywheel state between RUNNING and STOPPED
+        if (currFlywheelState != FlywheelStates::RUNNING) { // Toggle flywheel state between RUNNING and STOPPED
             currFlywheelState = FlywheelStates::RUNNING;
         } else {
             currFlywheelState = FlywheelStates::STOPPED;
@@ -79,4 +79,4 @@ void act() {
     }
 }
 
-}  // namespace src::Scorer
+} // namespace src::Scorer
