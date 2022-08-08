@@ -2,6 +2,8 @@
 
 #include "common.h"
 #include "okapi/api/control/async/asyncVelIntegratedController.hpp"
+#include "okapi/impl/device/button/controllerButton.hpp"
+#include "okapi/impl/device/controllerUtil.hpp"
 #include "okapi/impl/device/motor/motor.hpp"
 #include "robot_constants.hpp"
 
@@ -15,11 +17,15 @@ namespace src::Scorer {
  * - Intake-direct motor toggles in/off when R1 pressed, will also turn the flywheel on if it isn't already
  * - Hold R2 to outtake
  */
-ControllerButton flywheelToggle(ControllerDigital::L1);
+ControllerButton flywheelToggle(ControllerDigital::up);
+ControllerButton gateToggle(ControllerDigital::L1);
 ControllerButton intakeToggle(ControllerDigital::R1);
 ControllerButton outtakeBtn(ControllerDigital::R2);
 
+GateStates currGateState = GateStates::UP;
+
 FlywheelStates currFlywheelState = FlywheelStates::STOPPED;
+
 IntakeStates currIntakeState = IntakeStates::STOPPED;
 IntakeStates savedIntakeState = currIntakeState;
 
@@ -54,6 +60,14 @@ void update() {
             currFlywheelState = FlywheelStates::STOPPED;
         }
     }
+
+    if (gateToggle.changedToPressed()) {
+        if (currGateState == GateStates::UP) {
+            currGateState = GateStates::DOWN;
+        } else {
+            currGateState = GateStates::UP;
+        }
+    }
 }
 
 void act() {
@@ -75,6 +89,15 @@ void act() {
             break;
         case FlywheelStates::STOPPED:
             flywheelMotor.moveVelocity(0);
+            break;
+    }
+
+    switch (currGateState) {
+        case GateStates::UP:
+            gate.set_value(static_cast<bool>(GateStates::UP));
+            break;
+        case GateStates::DOWN:
+            gate.set_value(static_cast<bool>(GateStates::DOWN));
             break;
     }
 }

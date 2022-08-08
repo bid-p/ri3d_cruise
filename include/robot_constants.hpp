@@ -14,3 +14,7 @@ static constexpr uint8_t CHASSIS_PORT_R3 = 3;
 
 static constexpr uint8_t FLYWHEEL_PORT = 2;
 static constexpr uint8_t INTAKE_PORT = 1;
+
+static constexpr uint8_t GATE_PORT = 'A';
+
+static constexpr float TURN_FACTOR = 0.65f;

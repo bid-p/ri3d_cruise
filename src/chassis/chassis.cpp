@@ -26,7 +26,7 @@ void update() {}
 void act() {
     Chassis::chassis->getModel()->arcade(
         controller.getAnalog(ControllerAnalog::leftY),
-        TURN_LIMITING * controller.getAnalog(ControllerAnalog::rightX));
+        TURN_FACTOR * controller.getAnalog(ControllerAnalog::rightX));
 }
 
 }  // namespace src::Chassis
