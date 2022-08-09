@@ -7,6 +7,7 @@
 #include "okapi/api/util/mathUtil.hpp"
 #include "okapi/impl/device/motor/motor.hpp"
 #include "okapi/impl/device/motor/motorGroup.hpp"
+#include "okapi/impl/device/rotarysensor/adiEncoder.hpp"
 #include "robot_constants.hpp"
 
 /*
@@ -19,19 +20,34 @@ namespace src::Odometry {
 
     class Odometry {
       public:
-        Odometry(okapi::MotorGroup left_chassis_group, okapi::MotorGroup right_chassis_group,
-                 okapi::RotarySensor left_encoder, okapi::RotarySensor right_encoder, okapi::RotarySensor back_encoder);
+        Odometry();
 
+        /**
+         * @brief Initializes the odometry system and resets the on-board sensor-suite
+         *
+         */
         void initialize();
 
+        /**
+         * @brief Updates the pose of the robot using the on-board sensor-suite
+         *
+         */
         void update();
 
+        // Getters
+        float getXPosition();
+        float getYPosition();
+        float getOrientation();
+
       private:
-        okapi::MotorGroup left_chassis_group;
-        okapi::MotorGroup right_chassis_group;
-        okapi::RotarySensor left_encoder;
-        okapi::RotarySensor right_encoder;
-        okapi::RotarySensor back_encoder;
+        // Sensors
+        okapi::ADIEncoder left_encoder = okapi::ADIEncoder(LEFT_ENCODER_PORT_A, LEFT_ENCODER_PORT_B);
+        okapi::ADIEncoder right_encoder = okapi::ADIEncoder(RIGHT_ENCODER_PORT_A, RIGHT_ENCODER_PORT_B);
+        pros::Imu imu = pros::Imu(IMU_PORT);
+        // Control Variables
+        float xPosition;
+        float yPosition;
+        float orientation;
     };
 
 } // namespace src::Odometry
