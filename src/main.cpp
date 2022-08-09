@@ -1,5 +1,6 @@
 #include "chassis/chassis.hpp"
 #include "common.h"
+#include "informants/odometrySuite.hpp"
 #include "okapi/impl/device/controller.hpp"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
@@ -84,6 +85,7 @@ void autonomous() {}
 using namespace src;
 
 Controller controller;
+informants::OdometrySuite odom;
 
 void opcontrol() {
     Chassis::initialize();

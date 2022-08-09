@@ -1,5 +1,5 @@
 #pragma once
-#include "odometry.hpp"
+#include "odometrySuite.hpp"
 #include "okapi/api/device/motor/abstractMotor.hpp"
 #include "okapi/api/device/rotarysensor/continuousRotarySensor.hpp"
 #include "okapi/api/device/rotarysensor/rotarySensor.hpp"
@@ -13,10 +13,10 @@
 
 // See odometry.hpp for documentation
 
-namespace src::Odometry {
-    Odometry::Odometry() {}
+namespace src::informants {
+    OdometrySuite::OdometrySuite() {}
 
-    void Odometry::initialize() {
+    void OdometrySuite::initialize() {
         this->left_encoder.reset();
         this->right_encoder.reset();
         this->xPosition = 0;
@@ -33,7 +33,7 @@ namespace src::Odometry {
         printf("IMU Calibrated in %d [ms]\n", iter - time);
     }
 
-    void Odometry::update() {
+    void OdometrySuite::update() {
         // Update new position using sensors
         // CTLE -> Center to Left Encoder, CTRE -> Center to Right Encoder, CTBE -> Center to Back Encoder
         // this->orientation = (leftTravel - rightTravel) / (CTLE + CTRE)
@@ -43,7 +43,7 @@ namespace src::Odometry {
         // this->yPosition = 2 * ( (rightTravel / orientation) + CTRE) * sin(orientation / 2)
     }
 
-    float Odometry::getXPosition() { return this->xPosition; }
-    float Odometry::getYPosition() { return this->yPosition; }
-    float Odometry::getOrientation() { return this->orientation; }
-} // namespace src::Odometry
+    float OdometrySuite::getXPosition() { return this->xPosition; }
+    float OdometrySuite::getYPosition() { return this->yPosition; }
+    float OdometrySuite::getOrientation() { return this->orientation; }
+} // namespace src::informants

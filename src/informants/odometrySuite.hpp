@@ -3,7 +3,6 @@
 #include "okapi/api/device/motor/abstractMotor.hpp"
 #include "okapi/api/device/rotarysensor/continuousRotarySensor.hpp"
 #include "okapi/api/device/rotarysensor/rotarySensor.hpp"
-#include "okapi/api/odometry/odometry.hpp"
 #include "okapi/api/util/mathUtil.hpp"
 #include "okapi/impl/device/motor/motor.hpp"
 #include "okapi/impl/device/motor/motorGroup.hpp"
@@ -16,11 +15,11 @@ Odometry will need to access (or be updated) with encoder values
 in order to determine the robot's absolute position (x,y) and orientation (z)
 */
 
-namespace src::Odometry {
+namespace src::informants {
 
-    class Odometry {
+    class OdometrySuite {
       public:
-        Odometry();
+        OdometrySuite();
 
         /**
          * @brief Initializes the odometry system and resets the on-board sensor-suite
@@ -50,4 +49,4 @@ namespace src::Odometry {
         float orientation;
     };
 
-} // namespace src::Odometry
+} // namespace src::informants
