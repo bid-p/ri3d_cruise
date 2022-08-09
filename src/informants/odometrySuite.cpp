@@ -11,7 +11,7 @@
 #include "pros/rtos.hpp"
 #include "robot_constants.hpp"
 
-// See odometry.hpp for documentation
+// See odometrySuite.hpp for documentation
 
 namespace src::informants {
     OdometrySuite::OdometrySuite() {}
