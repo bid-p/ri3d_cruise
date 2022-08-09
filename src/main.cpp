@@ -90,10 +90,12 @@ informants::OdometrySuite odom;
 void opcontrol() {
     Chassis::initialize();
     Scorer::initialize();
+    odom.initialize();
 
     while (true) {
         Scorer::update();
         Chassis::update();
+        odom.update();
 
         Scorer::act();
         Chassis::act();
