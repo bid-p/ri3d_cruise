@@ -1,8 +1,5 @@
 #pragma once
 #include "main.h"
-#include "okapi/api/device/motor/abstractMotor.hpp"
-#include "okapi/impl/device/motor/motor.hpp"
-#include "okapi/impl/device/motor/motorGroup.hpp"
 
 // Motor Ports
 static constexpr uint8_t CHASSIS_PORT_L1 = 6;
