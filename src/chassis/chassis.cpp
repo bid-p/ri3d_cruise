@@ -13,7 +13,7 @@ std::shared_ptr<ChassisController> chassis =
         .withMotors(left_chassis_group, right_chassis_group)
         .withDimensions(
             AbstractMotor::gearset::blue,
-            {{4_in, 8_in}, imev5BlueTPR}) // {Wheelbase Width, Length}
+            {{4_in, 8_in}, imev5BlueTPR})  // {Wheelbase Width, Length}
         .build();
 
 void initialize() {
@@ -26,7 +26,7 @@ void update() {}
 void act() {
     Chassis::chassis->getModel()->arcade(
         controller.getAnalog(ControllerAnalog::leftY),
-        TURN_LIMITING * controller.getAnalog(ControllerAnalog::rightX));
+        TURN_FACTOR * controller.getAnalog(ControllerAnalog::rightX));
 }
 
-} // namespace src::Chassis
+}  // namespace src::Chassis
