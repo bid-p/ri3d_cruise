@@ -28,6 +28,7 @@ static constexpr float_t WHEEL_DIAMETER = 4.125f;        // [in]
 static constexpr float_t CENTER_TO_LEFT_ENCODER = 0.0f;  // [in]
 static constexpr float_t CENTER_TO_RIGHT_ENCODER = 0.0f; // [in]
 static constexpr float_t CENTER_TO_BACK_ENCODER = 0.0f;  // [in]
+static constexpr float_t WHEEL_TRACK = 13.5f;            // [in]
 
 // Programming constants
 static constexpr float TURN_FACTOR = 0.65f;

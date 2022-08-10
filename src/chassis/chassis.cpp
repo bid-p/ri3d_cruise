@@ -8,25 +8,25 @@
 
 namespace src::Chassis {
 
-std::shared_ptr<ChassisController> chassis =
-    ChassisControllerBuilder()
-        .withMotors(left_chassis_group, right_chassis_group)
-        .withDimensions(
-            AbstractMotor::gearset::blue,
-            {{4_in, 8_in}, imev5BlueTPR})  // {Wheelbase Width, Length}
-        .build();
+    std::shared_ptr<ChassisController> chassis =
+        ChassisControllerBuilder()
+            .withMotors(left_chassis_group, right_chassis_group)
+            .withDimensions(
+                AbstractMotor::gearset::blue,
+                {{WHEEL_DIAMETER, WHEEL_TRACK}, imev5BlueTPR})
+            .build();
 
-void initialize() {
-    left_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
-    right_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
-}
+    void initialize() {
+        left_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
+        right_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
+    }
 
-void update() {}
+    void update() {}
 
-void act() {
-    Chassis::chassis->getModel()->arcade(
-        controller.getAnalog(ControllerAnalog::leftY),
-        TURN_FACTOR * controller.getAnalog(ControllerAnalog::rightX));
-}
+    void act() {
+        Chassis::chassis->getModel()->arcade(
+            controller.getAnalog(ControllerAnalog::leftY),
+            TURN_FACTOR * controller.getAnalog(ControllerAnalog::rightX));
+    }
 
-}  // namespace src::Chassis
+} // namespace src::Chassis
