@@ -62,7 +62,7 @@ void update() {
     }
 
     // Gate state updating
-    if (gateToggle.changedToPressed()) {  // Toggle gate state between UP and DOWN
+    if (gateToggle.changedToPressed()) { // Toggle gate state between UP and DOWN
         if (currGateState == GateStates::UP) {
             currGateState = GateStates::DOWN;
         } else {
