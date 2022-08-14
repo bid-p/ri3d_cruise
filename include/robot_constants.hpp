@@ -35,3 +35,6 @@ static constexpr float TURN_FACTOR = 0.65f;
 static constexpr float P_GAIN = 0.0f; // TODO: Set this value
 static constexpr float I_GAIN = 0.0f;
 static constexpr float D_GAIN = 0.0f;
+static constexpr float P_GAIN_FLYWHEEL = 0.1f;
+static constexpr float I_GAIN_FLYWHEEL = 0.0f;
+static constexpr float D_GAIN_FLYWHEEL = 0.05f;

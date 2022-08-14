@@ -103,4 +103,25 @@ void act() {
     }
 }
 
+typedef struct PID {
+    float kP;
+    float kI;
+    float kD;
+    float integral;
+    float derivative;
+    float error;
+    float previousError;
+    float speed;
+    float target;
+    float sensor;
+} pid_t;
+
+pid_t FW;
+
+void flywheelVelocityControlTask(void *) {
+    while (true) {
+        FW.sensor = flywheelMotor.getPosition();
+    }
+}
+
 } // namespace src::Scorer
