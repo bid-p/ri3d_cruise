@@ -103,21 +103,6 @@ void act() {
     }
 }
 
-typedef struct PID {
-    float kP;
-    float kI;
-    float kD;
-    float integral;
-    float derivative;
-    float error;
-    float previousError;
-    float speed;
-    float target;
-    float sensor;
-} pid_t;
-
-pid_t FW;
-
 void flywheelVelocityControlTask(void *) {
     while (true) {
         FW.sensor = flywheelMotor.getPosition(); // May need to update getting encoder position
@@ -139,16 +124,14 @@ void flywheelVelocityControlTask(void *) {
 }
 
 // An alternative to the update method to use velocity control instead of ON/OFF control
-int flywheelTargetCounter = 0;
-const int flywheelMaxCounter = 2;
 void flywheelToggleTask(void *) {
     while (true) {
         if (flywheelToggle.changedToPressed()) {
-            flywheelTargetCounter++;
-            if (flywheelTargetCounter > flywheelMaxCounter) {
-                flywheelTargetCounter = 0;
+            flywheelToggleState++;
+            if (flywheelToggleState > FLYWHEEL_MAX_TOGGLE) {
+                flywheelToggleState = 0;
             }
-            switch (flywheelTargetCounter) {
+            switch (flywheelToggleState) {
                 case 0:
                     FW.target = 0;
                     break;

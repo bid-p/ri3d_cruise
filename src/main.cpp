@@ -5,7 +5,7 @@
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include "scorer/scorer.hpp"
-
+using namespace src;
 /**
  * A callback function for LLEMU's center button.
  *
@@ -35,6 +35,11 @@ void initialize() {
     pros::lcd::set_text(3, "UOUOUUOUOU");
 
     pros::lcd::register_btn1_cb(on_center_button);
+
+    // Tasks for flyhweel velocity control.
+    // update() and act() are for ON/OFF control
+    pros::Task flywheelVelocityHandler(Scorer::flywheelVelocityControlTask);
+    pros::Task flywheelToggleHandler(Scorer::flywheelToggleTask);
 }
 
 /**
@@ -81,8 +86,6 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-
-using namespace src;
 
 Controller controller;
 informants::OdometrySuite odom;
