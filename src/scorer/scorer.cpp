@@ -120,7 +120,47 @@ pid_t FW;
 
 void flywheelVelocityControlTask(void *) {
     while (true) {
-        FW.sensor = flywheelMotor.getPosition();
+        FW.sensor = flywheelMotor.getPosition(); // May need to update getting encoder position
+        flywheelMotor.getEncoder().reset();
+        FW.error = FW.target - FW.sensor;
+        FW.integral += FW.error;
+        FW.derivative = FW.error - FW.previousError;
+        FW.previousError = FW.error;
+        FW.speed = (FW.kP * FW.error) + (FW.kI * FW.integral) + (FW.kD * FW.derivative);
+        if (FW.speed < 0.5) {
+            FW.speed = 0.5;
+        }
+        flywheelMotor.controllerSet(FW.speed);
+        if (currIntakeState == IntakeStates::IN) {
+            intakeMotor.controllerSet(FW.speed);
+        }
+        pros::delay(20);
+    }
+}
+
+// An alternative to the update method to use velocity control instead of ON/OFF control
+int flywheelTargetCounter = 0;
+const int flywheelMaxCounter = 2;
+void flywheelToggleTask(void *) {
+    while (true) {
+        if (flywheelToggle.changedToPressed()) {
+            flywheelTargetCounter++;
+            if (flywheelTargetCounter > flywheelMaxCounter) {
+                flywheelTargetCounter = 0;
+            }
+            switch (flywheelTargetCounter) {
+                case 0:
+                    FW.target = 0;
+                    break;
+                case 1:
+                    FW.target = 2000;
+                    break;
+                case 2:
+                    FW.target = 2500;
+                    break;
+            }
+        }
+        pros::delay(50);
     }
 }
 
