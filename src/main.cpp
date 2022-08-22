@@ -1,6 +1,5 @@
 #include "chassis/chassis.hpp"
 #include "common.h"
-#include "informants/odometrySuite.hpp"
 #include "okapi/impl/device/controller.hpp"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
@@ -55,6 +54,13 @@ void disabled() {}
  */
 void competition_initialize() {}
 
+void testPIDFunctions() {
+    // src::Chassis::movePID(24, 24, 1000);
+    // pros::delay(500);
+    // src::Chassis::turnPID(90, true);
+    src::Chassis::gyroPID(90, true);
+}
+
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -85,20 +91,24 @@ void autonomous() {}
 using namespace src;
 
 Controller controller;
-informants::OdometrySuite odom;
+
+ControllerButton autonStart(ControllerDigital::X);
 
 void opcontrol() {
     Chassis::initialize();
     Scorer::initialize();
-    odom.initialize();
 
     while (true) {
         Scorer::update();
         Chassis::update();
-        odom.update();
 
         Scorer::act();
         Chassis::act();
+
+        if (autonStart.changedToPressed()) {
+            testPIDFunctions();
+            pros::delay(100);
+        }
 
         pros::delay(10);
     }
