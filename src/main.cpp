@@ -107,7 +107,6 @@ void opcontrol() {
 
         if (autonStart.changedToPressed()) {
             testPIDFunctions();
-            pros::delay(100);
         }
 
         pros::delay(10);

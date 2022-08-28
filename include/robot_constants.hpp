@@ -33,9 +33,9 @@ static constexpr float_t DRIVE_GEAR_RATIO = 72.0f / 48.0f;
 
 // Programming constants
 static constexpr float TURN_FACTOR = 0.65f;
-static constexpr float P_GAIN = 0.00185f; // TODO: Set this value
+static constexpr float P_GAIN = 0.00185f;
 static constexpr float I_GAIN = 0.0f;
 static constexpr float D_GAIN = 0.0001f;
-static constexpr float P_GAIN_TURN = 0.1875f; // TODO: Set this value
+static constexpr float P_GAIN_TURN = 0.1875f;
 static constexpr float I_GAIN_TURN = 0.000008f;
 static constexpr float D_GAIN_TURN = 0.15f;

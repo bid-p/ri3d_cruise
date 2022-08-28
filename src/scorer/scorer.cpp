@@ -62,7 +62,7 @@ void update() {
     }
 
     // Gate state updating
-    if (gateToggle.changedToPressed()) {  // Toggle gate state between UP and DOWN
+    if (gateToggle.changedToPressed()) { // Toggle gate state between UP and DOWN
         if (currGateState == GateStates::UP) {
             currGateState = GateStates::DOWN;
         } else {
@@ -74,7 +74,7 @@ void update() {
 void act() {
     switch (currIntakeState) {
         case IntakeStates::IN:
-            intakeMotor.moveVelocity(600);
+            intakeMotor.moveVelocity(500);
             break;
         case IntakeStates::OUT:
             intakeMotor.moveVelocity(-300);
@@ -86,7 +86,7 @@ void act() {
 
     switch (currFlywheelState) {
         case FlywheelStates::RUNNING:
-            flywheelMotor.moveVelocity(600);
+            flywheelMotor.moveVelocity(500);
             break;
         case FlywheelStates::STOPPED:
             flywheelMotor.moveVelocity(0);
