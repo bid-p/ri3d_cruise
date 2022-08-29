@@ -26,9 +26,12 @@ extern void initialize();
 extern void update();
 extern void act();
 
+void flywheelToggleTask(void *);
+void flywheelVelocityControlTask(void *);
+
 static Motor flywheelMotor = Motor(FLYWHEEL_PORT, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 static Motor intakeMotor = Motor(INTAKE_PORT, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
 static pros::ADIDigitalOut gate = pros::ADIDigitalOut(GATE_PORT, static_cast<bool>(GateStates::UP));
 
-}  // namespace src::Scorer
+} // namespace src::Scorer

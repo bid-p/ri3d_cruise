@@ -34,6 +34,9 @@ void initialize() {
     pros::lcd::set_text(3, "UOUOUUOUOU");
 
     pros::lcd::register_btn1_cb(on_center_button);
+
+    pros::Task flywheelVelocityHandle(src::Scorer::flywheelVelocityControlTask);
+    pros::Task flywheelToggleHandle(src::Scorer::flywheelToggleTask);
 }
 
 /**

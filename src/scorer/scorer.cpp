@@ -9,6 +9,71 @@
 
 namespace src::Scorer {
 
+typedef struct PID {
+    float kP;
+    float kI;
+    float kD;
+    float integral;
+    float derivative;
+    float error;
+    float previousError;
+    float target;
+    float speed;
+    float sensor;
+} pid;
+
+pid FW;
+
+ControllerButton flywheelToggleTaskButton(ControllerDigital::L2);
+int flywheelVelocityCounter = 0;
+const int numVelocityStates = 2; // number of states for the flywheel velocity
+void flywheelToggleTask(void *) {
+    while (true) {
+        if (flywheelToggleTaskButton.changedToPressed()) {
+            // Increment and wrap counter
+            flywheelVelocityCounter++;
+            if (flywheelVelocityCounter > numVelocityStates) {
+                flywheelVelocityCounter = 0;
+            }
+            // Handle counter state
+            switch (flywheelVelocityCounter) {
+                case 0:
+                    FW.target = 0;
+                    break;
+                case 1:
+                    FW.target = 2000;
+                    break;
+                case 2:
+                    FW.target = 2500;
+                    break;
+            }
+        }
+    }
+}
+
+void flywheelVelocityControlTask(void *) {
+    FW.kP = 0.1;
+    FW.kI = 0;
+    FW.kD = 0.05;
+    while (true) {
+        FW.sensor = flywheelMotor.getPosition();
+        flywheelMotor.getEncoder().reset();
+        FW.error = FW.target - FW.sensor;
+        FW.integral += FW.error;
+        FW.derivative = FW.error - FW.previousError;
+        FW.previousError = FW.error;
+        FW.speed = FW.kP * FW.error + FW.kI * FW.integral + FW.kD * FW.derivative;
+        if (flywheelVelocityCounter == 0) {
+            FW.speed = 0;
+        } else if (FW.speed < 0.5) {
+            FW.speed = 0.5;
+        }
+        flywheelMotor.controllerSet(FW.speed);
+        intakeMotor.controllerSet(FW.speed);
+        pros::delay(20);
+    }
+}
+
 // AsyncVelIntegratedController FlywheelVelController(scorer1, {AbstractMotor::gearset::green, 1}, 600);
 
 /**
