@@ -14,4 +14,9 @@ temp.log
 temp.errors
 *.ini
 .d/
-.cache/
+.cache/*
+
+
+# Formatting
+*.editorconfig
+*.clang-format

@@ -31,22 +31,22 @@ IntakeStates savedIntakeState = currIntakeState;
 
 void initialize() {
     flywheelMotor.setBrakeMode(AbstractMotor::brakeMode::coast);
-    intakeMotor.setBrakeMode(AbstractMotor::brakeMode::brake);  // Set to brake because we might want to hold a frisbee in the intake
+    intakeMotor.setBrakeMode(AbstractMotor::brakeMode::brake); // Set to brake because we might want to hold a frisbee in the intake
 }
 
 void update() {
     // Intake state updating
     if (outtakeBtn.changedToPressed()) {
-        savedIntakeState = currIntakeState;   // Save intake state from before outtake button was pressed
-        currIntakeState = IntakeStates::OUT;  // Outtake while outtake btn is pressed
+        savedIntakeState = currIntakeState;  // Save intake state from before outtake button was pressed
+        currIntakeState = IntakeStates::OUT; // Outtake while outtake btn is pressed
     } else if (outtakeBtn.changedToReleased()) {
-        currIntakeState = savedIntakeState;  // Return to saved state when outtake btn is released
+        currIntakeState = savedIntakeState; // Return to saved state when outtake btn is released
     }
 
     if (intakeToggle.changedToPressed()) {
-        if (currIntakeState != IntakeStates::IN) {  // Toggle intake state between IN and STOPPED
+        if (currIntakeState != IntakeStates::IN) { // Toggle intake state between IN and STOPPED
             currIntakeState = IntakeStates::IN;
-            currFlywheelState = FlywheelStates::RUNNING;  // If intake is running, run the flywheel as well
+            currFlywheelState = FlywheelStates::RUNNING; // If intake is running, run the flywheel as well
         } else {
             currIntakeState = IntakeStates::STOPPED;
         }
@@ -54,7 +54,7 @@ void update() {
 
     // Flywheel state updating
     if (flywheelToggle.changedToPressed()) {
-        if (currFlywheelState != FlywheelStates::RUNNING) {  // Toggle flywheel state between RUNNING and STOPPED
+        if (currFlywheelState != FlywheelStates::RUNNING) { // Toggle flywheel state between RUNNING and STOPPED
             currFlywheelState = FlywheelStates::RUNNING;
         } else {
             currFlywheelState = FlywheelStates::STOPPED;
@@ -62,7 +62,7 @@ void update() {
     }
 
     // Gate state updating
-    if (gateToggle.changedToPressed()) {  // Toggle gate state between UP and DOWN
+    if (gateToggle.changedToPressed()) { // Toggle gate state between UP and DOWN
         if (currGateState == GateStates::UP) {
             currGateState = GateStates::DOWN;
         } else {
@@ -103,4 +103,48 @@ void act() {
     }
 }
 
-}  // namespace src::Scorer
+void flywheelVelocityControlTask(void *) {
+    while (true) {
+        FW.sensor = flywheelMotor.getPosition(); // May need to update getting encoder position
+        flywheelMotor.getEncoder().reset();
+        FW.error = FW.target - FW.sensor;
+        FW.integral += FW.error;
+        FW.derivative = FW.error - FW.previousError;
+        FW.previousError = FW.error;
+        FW.speed = (FW.kP * FW.error) + (FW.kI * FW.integral) + (FW.kD * FW.derivative);
+        if (FW.speed < 0.5) {
+            FW.speed = 0.5;
+        }
+        flywheelMotor.controllerSet(FW.speed);
+        if (currIntakeState == IntakeStates::IN) {
+            intakeMotor.controllerSet(FW.speed);
+        }
+        pros::delay(20);
+    }
+}
+
+// An alternative to the update method to use velocity control instead of ON/OFF control
+void flywheelToggleTask(void *) {
+    while (true) {
+        if (flywheelToggle.changedToPressed()) {
+            flywheelToggleState++;
+            if (flywheelToggleState > FLYWHEEL_MAX_TOGGLE) {
+                flywheelToggleState = 0;
+            }
+            switch (flywheelToggleState) {
+                case 0:
+                    FW.target = 0;
+                    break;
+                case 1:
+                    FW.target = 2000;
+                    break;
+                case 2:
+                    FW.target = 2500;
+                    break;
+            }
+        }
+        pros::delay(50);
+    }
+}
+
+} // namespace src::Scorer

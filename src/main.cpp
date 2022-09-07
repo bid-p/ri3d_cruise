@@ -1,10 +1,11 @@
 #include "chassis/chassis.hpp"
 #include "common.h"
+#include "informants/odometrySuite.hpp"
 #include "okapi/impl/device/controller.hpp"
 #include "pros/misc.h"
 #include "pros/misc.hpp"
 #include "scorer/scorer.hpp"
-
+using namespace src;
 /**
  * A callback function for LLEMU's center button.
  *
@@ -34,6 +35,11 @@ void initialize() {
     pros::lcd::set_text(3, "UOUOUUOUOU");
 
     pros::lcd::register_btn1_cb(on_center_button);
+
+    // Tasks for flyhweel velocity control.
+    // update() and act() are for ON/OFF control
+    pros::Task flywheelVelocityHandler(Scorer::flywheelVelocityControlTask);
+    pros::Task flywheelToggleHandler(Scorer::flywheelToggleTask);
 }
 
 /**
@@ -81,17 +87,18 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 
-using namespace src;
-
 Controller controller;
+informants::OdometrySuite odom;
 
 void opcontrol() {
     Chassis::initialize();
     Scorer::initialize();
+    odom.initialize();
 
     while (true) {
         Scorer::update();
         Chassis::update();
+        odom.update();
 
         Scorer::act();
         Chassis::act();
