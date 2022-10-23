@@ -22,7 +22,14 @@ void initialize() {
     left_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
     right_chassis_group.setBrakeMode(AbstractMotor::brakeMode::brake);
     imuSensor.reset();
-    pros::delay(1000);
+    int time = pros::millis();
+    int iter = 0;
+    while (imuSensor.is_calibrating()) {
+        printf("IMU Calibrating... %d [ms]\n", iter);
+        iter += 100;
+        pros::delay(100);
+    }
+    printf("IMU Calibrated in %d [ms]\n", iter - time);
 }
 
 void update() {}
